@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Rol {
+  admin
+  seller
+  customer
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  rol       Rol      @default(customer)
+  createdAt DateTime @default(now()) @map("create_at")
+  updateAt  DateTime @updatedAt @map("update_at")
+
+  Customer Customer?
+  @@map("user")
+}
+
+model Customer {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(100)
+  lastName String @map("last_namae") @db.VarChar(100)
+  userId   Int    @map("user_id")
+
+  user User @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  Order Order[]
+
+  @@unique([userId])
+  @@map("customer")
+}
+
+model Product {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(100)
+  image      String
+  price      Float    @db.DoublePrecision()
+  categoryId Int      @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id], onUpdate: SetNull, onDelete: SetNull)
+
+  Order_Product Order_Product[]
+  @@map("product")
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(200)
+
+  Product Product[]
+
+  @@map("category")
+}
+
+model Order {
+  id         Int @id @default(autoincrement())
+  customerId Int @map("customer_id")
+
+  customer      Customer        @relation(fields: [customerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  Order_Product Order_Product[]
+
+  @@map("order")
+}
+
+model Order_Product {
+  orderId   Int
+  productId Int
+  quantity  Int
+
+  order   Order   @relation(fields: [orderId], references: [id], onUpdate: SetNull, onDelete: SetNull)
+  product Product @relation(fields: [productId], references: [id], onUpdate: SetNull, onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @map("create_at")
+  updateAt  DateTime @updatedAt @map("update_at")
+
+  @@id([orderId, productId])
+}
