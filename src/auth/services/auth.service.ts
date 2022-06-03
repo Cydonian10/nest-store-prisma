@@ -27,4 +27,13 @@ export class AuthService {
       user,
     };
   }
+
+  async refreshToken(token: string) {
+    const usuario = (await this.jwtService.decode(token)) as any;
+
+    const payload: PayloadToken = { sub: usuario.sub, role: usuario.role };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { User } from "@prisma/client";
 import { Request } from "express";
@@ -15,5 +15,8 @@ export class AuthController {
     return user;
   }
 
-  async refreshToken() {}
+  @Post("refresh")
+  async refreshToken(@Body() token: { token: string }) {
+    return this.authService.refreshToken(token.token);
+  }
 }

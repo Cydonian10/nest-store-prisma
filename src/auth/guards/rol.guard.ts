@@ -16,9 +16,10 @@ export class RolGuard implements CanActivate {
     const req = context.switchToHttp().getRequest<Request>();
     const user = req.user as PayloadToken;
     const isAuth = user.role === role;
+
     if (!isAuth) {
       throw new ForbiddenException("no teiene acceso");
     }
-    return false;
+    return true;
   }
 }

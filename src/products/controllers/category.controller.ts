@@ -25,7 +25,7 @@ import { CategoryService } from "../services/category.service";
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @Roles(Rol.seller)
+  @Roles(Rol.customer)
   @Get()
   // @Public()
   async findAll() {
