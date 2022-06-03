@@ -22,6 +22,20 @@ export class UserService {
       throw new NotFoundException(`${id} not found`);
     }
 
+    delete user.password;
+
+    return user;
+  }
+
+  async findEmail(email: string) {
+    const user = await this.prismaService.user.findFirst({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`${email} not found`);
+    }
+
     return user;
   }
 

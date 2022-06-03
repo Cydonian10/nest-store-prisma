@@ -12,6 +12,7 @@ import { ProductsModule } from "./products/products.module";
 import { AppService } from "./app.service";
 import { AppController } from "./app.controller";
 import { OrdersModule } from './orders/orders.module';
+import { AuthModule } from './auth/auth.module';
 
 const api_key = process.env.DATABASE_URL;
 
@@ -27,6 +28,7 @@ const api_key = process.env.DATABASE_URL;
     UsersModule,
     ProductsModule,
     OrdersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

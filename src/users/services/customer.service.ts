@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { Customer, Prisma } from "@prisma/client";
+import { hash } from "bcrypt";
 
 import { PrismaService } from "src/prisma/services/prisma.service";
 import { CreateCustomerDto, UpdateCustomerDto } from "../dtos/cutomer.dto";
@@ -43,6 +43,7 @@ export class CustomerService {
     if (user) {
       throw new BadRequestException("Ya existe el email");
     }
+    const hashPassword = await hash(userData.password, 3);
 
     const newCustomer = await this.prismaService.customer.create({
       data: {
@@ -51,7 +52,7 @@ export class CustomerService {
         user: {
           create: {
             email: userData.email,
-            password: userData.password,
+            password: hashPassword,
           },
         },
       },

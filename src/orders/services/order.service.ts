@@ -34,4 +34,11 @@ export class OrderService {
 
     return itemDelete;
   }
+
+  async orderByUser(idCustomer: number) {
+    return this.prismaService.order.findMany({
+      where: { customer: { userId: idCustomer } },
+      include: { Order_Product: true },
+    });
+  }
 }
