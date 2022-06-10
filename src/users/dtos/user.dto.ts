@@ -19,6 +19,9 @@ export class CreateUserDto {
   @IsEnum(Rol, { message: `Rol Opcion invalida , las opciones validas son ${EnumToString(Rol)}` })
   @IsOptional()
   readonly rol: Rol;
+
+  @IsOptional()
+  recoveryToken: string;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}

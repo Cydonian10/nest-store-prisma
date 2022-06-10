@@ -39,6 +39,16 @@ export class UserService {
     return user;
   }
 
+  async update(changes: UpdateUserDto, id: number) {
+    const user = await this.prismaService.user.findUnique({ where: { id } });
+    if (!user) throw new NotFoundException(`${id} not found`);
+    const userUpdate = this.prismaService.user.update({
+      where: { id },
+      data: { ...user, ...changes },
+    });
+    return userUpdate;
+  }
+
   async create(data: CreateUserDto) {
     const newUser = await this.prismaService.user.create({
       data: { email: data.email, password: data.password },

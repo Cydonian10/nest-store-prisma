@@ -18,7 +18,7 @@ import { OrdersModule } from "src/orders/orders.module";
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: {
-        expiresIn: "20m",
+        expiresIn: "20min",
       },
     }),
   ],

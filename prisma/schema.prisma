@@ -17,10 +17,12 @@ enum Rol {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  rol       Rol      @default(customer)
+  id            Int     @id @default(autoincrement())
+  email         String  @unique
+  password      String
+  rol           Rol     @default(customer)
+  recoveryToken String?
+
   createdAt DateTime @default(now()) @map("create_at")
   updateAt  DateTime @updatedAt @map("update_at")
 

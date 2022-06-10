@@ -19,4 +19,18 @@ export class AuthController {
   async refreshToken(@Body() token: { token: string }) {
     return this.authService.refreshToken(token.token);
   }
+
+  @Post("recovery")
+  async sendEmailRecovery(@Body("email") email: string) {
+    const rta = this.authService.sendRecovery(email);
+    return rta;
+  }
+
+  @Post("change-password")
+  async changePassword(@Body() data: { token: string; newPassword: string }) {
+    const { token, newPassword } = data;
+    console.log(data);
+    const rpta = await this.authService.changePassword(token, newPassword);
+    return rpta;
+  }
 }
